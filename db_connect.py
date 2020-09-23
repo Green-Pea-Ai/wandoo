@@ -2,6 +2,8 @@
 
 
 # In[66]:
+# 따로 모듈로 만들어서 쓰는 코드
+# 이거 안씀
 
 import pymysql 
 
@@ -17,15 +19,18 @@ class DBConnect:
         self.curs = self.conn.cursor(pymysql.cursors.DictCursor)
         
     # insert 메서드 정의
-    def video_insert(self, tag_dict):
+    def video_insert(self, videos_value):
+        print('is it ?')
         try:
             # insert 쿼리 작성
-            sql = """insert into video_crawl_table (youtuber_name, video_play_time, subscribe_num, views_num, upload_time, crwaling_time) values (%s, %s, %s, %s, %s, %s)"""
-            
-            for col_0, col_1, col_2, col_3, col_4, col_5, col_6 in tag_dict:
+            sql = """insert into video_crawl_table (youtuber_name, youtube_title, youtube_play_time, subscribe_num, views_num, upload_time, crwaling_time, youtube_link) values (%s, %s, %s, %s, %s, %s, %s, %s);"""
+                        
+            for col_0, col_1, col_2, col_3, col_4, col_5, col_6, col_7 in videos_value:
+                print('videos_value:', videos_value)
                 # insert 쿼리 실행
-                self.curs.execute(sql, "{}{}{}{}{}{}{}".format(col_0, col_1, col_2, col_3, col_4, col_5, col_6))
-                
+                self.curs.execute(sql, "{}{}{}{}{}{}{}{}".format(col_0, col_1, col_2, col_3, col_4, col_5, col_6, col_7))
+            
+            
             # DML문 완료 후 커밋
             self.conn.commit()
             
@@ -35,4 +40,4 @@ class DBConnect:
         finally:
             # 커넥트 인스턴스 닫기
             self.conn.close()
-
+            
